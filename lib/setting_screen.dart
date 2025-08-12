@@ -15,7 +15,7 @@ class _PrinterSettingScreenState extends State<PrinterSettingScreen>
   int labelWidth = 110;
   int labelHeight = 60;
   String labelGap = '';
-  int angle = 180;
+  int angle = 0;
   bool autoApply = true;
   String connectedDeviceName = '';
   String connectedDeviceMac = '';
@@ -41,10 +41,10 @@ class _PrinterSettingScreenState extends State<PrinterSettingScreen>
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       printerCommand = prefs.getString('printerCommand') ?? 'TSPL';
-      labelWidth = prefs.getInt('labelWidth') ?? 220;
-      labelHeight = prefs.getInt('labelHeight') ?? 120;
+      labelWidth = prefs.getInt('labelWidth') ?? 110;
+      labelHeight = prefs.getInt('labelHeight') ?? 60;
       labelGap = prefs.getString('labelGap') ?? '1mm';
-      angle = prefs.getInt('angle') ?? 90;
+      angle = prefs.getInt('angle') ?? 0;
       autoApply = prefs.getBool('autoApply') ?? true;
     });
 
