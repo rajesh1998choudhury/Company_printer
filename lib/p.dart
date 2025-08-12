@@ -276,7 +276,6 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
@@ -329,7 +328,7 @@ class _PrinterScreenState extends State<PrinterScreen> {
       'labelWidth': prefs.getInt('labelWidth') ?? 110,
       'labelHeight': prefs.getInt('labelHeight') ?? 60,
       'labelGap': prefs.getString('labelGap') ?? '1mm',
-      'angle': prefs.getInt('angle') ?? 90,
+      'angle': prefs.getInt('angle') ?? 0,
     };
   }
 
@@ -396,7 +395,7 @@ class _PrinterScreenState extends State<PrinterScreen> {
           img.copyRotate(decoded, angle: settings['angle']);
 
       // Resize to target width (576px for 80mm at 203 DPI)
-      const int targetWidth = 576;
+      final int targetWidth = settings['angle'] == 0 ? 832 : 576;
       final img.Image resized = img.copyResize(rotated, width: targetWidth);
 
       // Optional debug image save (if running on device with file access)
@@ -412,6 +411,7 @@ class _PrinterScreenState extends State<PrinterScreen> {
       final String tsplCommand = '''
 SIZE ${settings['labelWidth']} mm,${settings['labelHeight']} mm
 GAP ${settings['labelGap']},0
+DIRECTION 0
 CLS
 BITMAP 0,0,$widthBytes,$height,0,${_toHexString(monoData)}
 PRINT $count
